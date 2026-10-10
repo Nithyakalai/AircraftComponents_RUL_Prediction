@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="topbar">
+  <h2>Engine RUL Predictor</h2>
+  <div>{{ user }} &nbsp;|&nbsp; <a href="{{ url_for('logout') }}">Log out</a></div>
+</div>
+
+<form method="get" class="selector">
+  <label>Engine</label>
+  <select name="engine" onchange="this.form.submit()">
+    {% for e in engine_ids %}
+      <option value="{{ e }}" {% if e == engine_id %}selected{% endif %}>Engine {{ e }}</option>
+    {% endfor %}
+  </select>
+</form>
+
+<div class="hero status-{{ status|lower }}">
+  <div class="hero-label">Predicted Remaining Useful Life</div>
+  <div class="hero-value">{{ predicted }} <span>cycles</span></div>
+  <div class="hero-status">{{ status }}</div>
+  <div class="hero-sub">Cycle {{ cycle }} &nbsp;|&nbsp; Actual RUL: {{ actual }}</div>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="m-label">MAE</div><div class="m-value">{{ mae }}</div></div>
+  <div class="metric"><div class="m-label">RMSE</div><div class="m-value">{{ rmse }}</div></div>
+  <div class="metric"><div class="m-label">R²</div><div class="m-value">{{ r2 }}</div></div>
+</div>
+{% endblock %}
