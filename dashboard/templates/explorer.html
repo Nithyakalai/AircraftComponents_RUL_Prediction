@@ -1,0 +1,52 @@
+{% extends "app_base.html" %}
+{% block title %}Engine Explorer · AeroLife{% endblock %}
+{% block heading %}Engine Explorer{% endblock %}
+{% block content %}
+
+{% set action = url_for('explorer') %}{% set button = 'Run Prediction' %}
+<div class="select-row">{% include "_select.html" %}</div>
+
+{% if error %}<div class="notice error">{{ error }}</div>{% endif %}
+
+{% if predicted is not none %}
+<section class="result">
+  <div class="label">Prediction result</div>
+  <div class="rul">
+    <span class="rul-value">{{ '%.1f'|format(predicted) }}</span>
+    <span class="rul-unit">cycles &mdash; estimated remaining useful life</span>
+  </div>
+  <div class="status status-{{ status|lower }}">{{ status }}</div>
+  <span class="model-chip">{{ model }}</span>
+</section>
+
+<section class="two-col">
+  <div>
+    <h2>Model breakdown</h2>
+    <table class="data">
+      <thead><tr><th>Model</th><th class="num">Estimated RUL</th></tr></thead>
+      <tbody>
+        {% for row in breakdown %}
+        <tr class="{{ 'best' if row.selected }}"><td>{{ row.model }}{% if row.selected %} <span class="hint">selected</span>{% endif %}</td><td class="num">{{ '%.1f'|format(row.value) }}</td></tr>
+        {% endfor %}
+        <tr class="ref"><td>Reference</td><td class="num">{{ '%.1f'|format(reference) }}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <h2>Prediction context</h2>
+    <dl class="facts">
+      <dt>Engine ID</dt><dd>{{ engine }}</dd>
+      <dt>Current cycle</dt><dd>{{ cycle }}</dd>
+      <dt>Model used</dt><dd>{{ model }}</dd>
+      <dt>Predicted at</dt><dd>{{ timestamp }}</dd>
+    </dl>
+  </div>
+</section>
+
+<section>
+  <h2>RUL over the observed cycles</h2>
+  {{ rul_chart }}
+</section>
+{% endif %}
+{% endblock %}

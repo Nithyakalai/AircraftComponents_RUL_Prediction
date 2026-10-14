@@ -1,0 +1,10 @@
+<div class="scale-wrap">
+  <div class="scale">
+    <span class="seg seg-critical" style="width:16%">Critical</span>
+    <span class="seg seg-warning"  style="width:24%">Warning</span>
+    <span class="seg seg-monitor"  style="width:40%">Monitor</span>
+    <span class="seg seg-healthy"  style="width:20%">Healthy</span>
+    <span class="marker" style="left:{{ [predicted / cap * 100, 100]|min }}%"></span>
+  </div>
+  <div class="scale-labels"><span>Higher priority</span><span>Lower priority</span></div>
+</div>

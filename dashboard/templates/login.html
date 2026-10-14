@@ -1,12 +1,22 @@
 {% extends "base.html" %}
-{% block content %}
-<div class="card">
-  <h2>Log in</h2>
-  <form method="post">
-    <input name="username" placeholder="Username" required>
-    <input name="password" type="password" placeholder="Password" required>
+{% block title %}Log in · AeroLife{% endblock %}
+{% block body %}
+<main class="auth">
+  <div class="brand-name">AeroLife</div>
+  <div class="brand-sub"><i>An Aircraft Engine Health Monitoring Application</i></div>
+
+  {% with messages = get_flashed_messages() %}
+    {% for m in messages %}<div class="notice">{{ m }}</div>{% endfor %}
+  {% endwith %}
+
+  <h1>Log in</h1>
+  <form method="post" class="stack">
+    <label for="username">Username</label>
+    <input id="username" name="username" required autofocus>
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" required>
     <button type="submit">Log in</button>
   </form>
-  <p>New here? <a href="{{ url_for('signup') }}">Sign up</a></p>
-</div>
+  <p class="aside">No account yet? <a href="{{ url_for('signup') }}">Sign up</a></p>
+</main>
 {% endblock %}

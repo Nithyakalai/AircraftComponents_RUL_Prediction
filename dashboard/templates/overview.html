@@ -1,0 +1,50 @@
+{% extends "app_base.html" %}
+{% block title %}Overview · AeroLife{% endblock %}
+{% block heading %}RUL Estimator{% endblock %}
+{% block content %}
+<section class="stats">
+  <div class="stat">
+    <div class="label">Engines analyzed</div>
+    <div class="figure">{{ engine_ids|length }}</div>
+    <div class="note">C-MAPSS FD001 test set</div>
+  </div>
+  <div class="stat">
+    <div class="label">Selected engine</div>
+    <div class="figure">Engine {{ engine }}</div>
+    <div class="note">Observed up to cycle {{ cycle }}</div>
+  </div>
+  <div class="stat">
+    <div class="label">Estimated RUL</div>
+    <div class="figure">{% if predicted is not none %}{{ '%.1f'|format(predicted) }}{% else %}&ndash;{% endif %} <small>cycles</small></div>
+    <div class="note">{{ model }}</div>
+  </div>
+  <div class="stat">
+    <div class="label">Lowest test MAE</div>
+    <div class="figure">{{ '%.1f'|format(best.MAE) }} <small>cycles</small></div>
+    <div class="note">{{ best.model }}</div>
+  </div>
+</section>
+
+<section class="split">
+  <div>
+    <h2>Engine {{ engine }} &mdash; RUL estimate</h2>
+    {% if error %}
+      <div class="notice error">{{ error }}</div>
+    {% else %}
+      <div class="rul">
+        <span class="rul-value">{{ '%.1f'|format(predicted) }}</span>
+        <span class="rul-unit">cycles remaining</span>
+      </div>
+      <div class="status status-{{ status|lower }}">{{ status }}</div>
+      {% include "_scale.html" %}
+      <p class="fine">(Critical below 20 cycles, Warning 20–49, Monitor 50–100, Healthy above 100).</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <h2>Select engine and model</h2>
+    {% set action = url_for('overview') %}{% set button = 'Run Prediction' %}
+    {% include "_select.html" %}
+  </div>
+</section>
+{% endblock %}

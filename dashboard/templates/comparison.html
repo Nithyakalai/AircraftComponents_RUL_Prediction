@@ -1,0 +1,29 @@
+{% extends "app_base.html" %}
+{% block title %}Model Comparison · AeroLife{% endblock %}
+{% block heading %}Model Comparison{% endblock %}
+{% block content %}
+
+<table class="data wide">
+  <thead>
+    <tr><th>Model</th><th class="num">MAE &darr;</th><th class="num">RMSE &darr;</th><th class="num">R&sup2; &uarr;</th></tr>
+  </thead>
+  <tbody>
+    {% for m in metrics %}
+    <tr class="{{ 'best' if m.model == best.model }}">
+      <td>{{ m.model }}{% if m.model == best.model %} <span class="hint">lowest MAE</span>{% endif %}</td>
+      <td class="num">{{ '%.2f'|format(m.MAE) }}</td>
+      <td class="num">{{ '%.2f'|format(m.RMSE) }}</td>
+      <td class="num">{{ '%.3f'|format(m.R2) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p class="verdict">Best test performance: <strong>{{ best.model }}</strong>, with a mean absolute error of {{ '%.2f'|format(best.MAE) }} cycles.</p>
+
+<section class="two-col">
+  <div><h2>MAE (cycles, lower is better)</h2>{{ mae_chart }}</div>
+  <div><h2>RMSE (cycles, lower is better)</h2>{{ rmse_chart }}</div>
+</section>
+
+{% endblock %}

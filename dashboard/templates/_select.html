@@ -1,0 +1,17 @@
+<form method="get" action="{{ action }}" class="select-form">
+  <div class="field">
+    <label for="engine">Engine ID</label>
+    <select id="engine" name="engine">
+      {% for e in engine_ids %}<option value="{{ e }}" {{ 'selected' if e == engine }}>Engine {{ e }}</option>{% endfor %}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="model">Prediction model</label>
+    <select id="model" name="model">
+      {% for m in models %}<option value="{{ m }}" {{ 'selected' if m == model }}>{{ m }}</option>{% endfor %}
+    </select>
+  </div>
+
+  <button type="submit">{{ button }}</button>
+</form>

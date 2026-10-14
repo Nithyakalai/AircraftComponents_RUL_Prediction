@@ -1,0 +1,32 @@
+{% extends "app_base.html" %}
+{% block title %}Sensor Analytics · AeroLife{% endblock %}
+{% block heading %}Sensor Analytics{% endblock %}
+{% block content %}
+
+<form method="get" action="{{ url_for('sensors') }}" class="sensor-form">
+  <div class="select-form inline">
+    <div class="field">
+      <label for="engine">Engine ID</label>
+      <select id="engine" name="engine">
+        {% for e in engine_ids %}<option value="{{ e }}" {{ 'selected' if e == engine }}>Engine {{ e }}</option>{% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="checks">
+    {% for s in all_sensors %}
+      <label class="check"><input type="checkbox" name="sensor" value="{{ s }}" {{ 'checked' if s in chosen }}> {{ s|replace('_', ' ')|capitalize }}</label>
+    {% endfor %}
+  </div>
+  <button type="submit">View charts</button>
+</form>
+
+<div class="chart-grid">
+  {% for name, chart in charts %}
+  <section>
+    <h2>{{ name|replace('_', ' ')|capitalize }}</h2>
+    {{ chart }}
+  </section>
+  {% endfor %}
+</div>
+
+{% endblock %}

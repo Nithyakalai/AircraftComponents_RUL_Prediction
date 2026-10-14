@@ -1,0 +1,36 @@
+{% extends "app_base.html" %}
+{% block title %}Maintenance Planner · AeroLife{% endblock %}
+{% block heading %}Maintenance Planner{% endblock %}
+{% block content %}
+
+<form method="get" action="{{ url_for('planner') }}" class="select-form inline">
+  <div class="field">
+    <label for="model">Prediction model</label>
+    <select id="model" name="model">
+      {% for m in models %}<option value="{{ m }}" {{ 'selected' if m == model }}>{{ m }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="threshold">Review below (cycles)</label>
+    <input id="threshold" name="threshold" type="number" min="0" max="200" step="1" value="{{ '%g'|format(threshold) }}">
+  </div>
+  <button type="submit">Apply</button>
+</form>
+
+<p class="verdict"><strong>{{ flagged }}</strong> of {{ table|length }} engines are estimated to have fewer than {{ '%g'|format(threshold) }} cycles left.</p>
+
+<table class="data wide">
+  <thead><tr><th>Engine</th><th class="num">Estimated RUL</th><th>Priority</th><th>Review</th></tr></thead>
+  <tbody>
+    {% for r in table %}
+    <tr class="{{ 'flag' if r.flag }}">
+      <td>Engine {{ r.engine }}</td>
+      <td class="num">{{ '%.1f'|format(r.rul) }} cycles</td>
+      <td><span class="status status-{{ r.status|lower }}">{{ r.status }}</span></td>
+      <td>{{ 'Closer review' if r.flag else '' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

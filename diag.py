@@ -15,3 +15,4 @@ train_df = train_df.loc[:, ~train_df.columns.astype(str).str.startswith("unnamed
 print("After standardize columns:", train_df.columns.tolist())
 print("Duplicated after:", train_df.columns[train_df.columns.duplicated()].tolist())
 print("Type of train_df['rul']:", type(train_df["rul"]))
+

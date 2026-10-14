@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-name">AeroLife</div>
+      <div class="brand-sub">Aircraft Engine Health Monitor</div>
+    </div>
+
+    <nav>
+      <a href="{{ url_for('overview') }}"   class="{{ 'on' if request.endpoint == 'overview' }}"><span class="nav-title">RUL estimator</span></a>
+      <a href="{{ url_for('explorer') }}"   class="{{ 'on' if request.endpoint == 'explorer' }}"><span class="nav-title">Engine Explorer</span></a>
+      <a href="{{ url_for('comparison') }}" class="{{ 'on' if request.endpoint == 'comparison' }}"><span class="nav-title">Model Comparison</span></a>
+      <a href="{{ url_for('sensors') }}"    class="{{ 'on' if request.endpoint == 'sensors' }}"><span class="nav-title">Sensor Analytics</span></a>
+      <a href="{{ url_for('planner') }}"    class="{{ 'on' if request.endpoint == 'planner' }}"><span class="nav-title">Maintenance Planner</span></a>
+    </nav>
+
+    <div class="side-foot">
+      <div>Signed in as <strong>{{ user }}</strong> &middot; <a href="{{ url_for('logout') }}">Log out</a></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="page-head">
+      <h1>{% block heading %}{% endblock %}</h1>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+      {% for m in messages %}<div class="notice">{{ m }}</div>{% endfor %}
+    {% endwith %}
+
+    {% for name, reason in (problems or {}).items() %}
+      <div class="notice error"><strong>{{ name }} could not be loaded.</strong> {{ reason }}</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}
